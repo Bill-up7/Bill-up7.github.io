@@ -1,0 +1,618 @@
+/* ========================
+   BASE
+   ======================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'DM Sans', sans-serif;
+  background: #1a1f1a;
+  overflow: hidden;
+}
+
+/* ========================
+   SCENE WRAPPER
+   ======================== */
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ========================
+   NAVBAR
+   ======================== */
+
+.navbar {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.navbar.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.navbar button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.03em;
+}
+
+.navbar button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar button.active {
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ========================
+   BOOK
+   ======================== */
+
+.book-wrap {
+  perspective: 2800px;
+  transform: translateX(30px);
+}
+
+.book {
+  width: 380px;
+  height: 540px;
+  position: relative;
+  transform-style: preserve-3d;
+  /* FIX: prevent left-base-page or any child from bleeding outside the book */
+  overflow: hidden;
+}
+
+/* SPINE */
+.book::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  width: 32px;
+  height: 100%;
+  background: linear-gradient(90deg, #1a2e1a 0%, #2a4a2a 40%, #1e3a1e 100%);
+  border-radius: 4px 0 0 4px;
+  z-index: 50;
+}
+
+/* ========================
+   LEFT BASE PAGE
+   Simulates the left-hand page you see after flipping.
+   Must stay fully within the book bounds.
+   ======================== */
+
+.left-base-page {
+  position: absolute;
+  /* Stay flush inside — no negative offsets that could overflow */
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    #f2ede4 0%,
+    #ece6da 100%
+  );
+  border-radius: 0;
+  z-index: 0;
+  display: none;
+}
+
+/* ========================
+   CLICK ZONES
+   ======================== */
+
+.click-zone {
+  position: absolute;
+  right: 0;
+  width: 60px;
+  height: 100%;
+  z-index: 100;
+  cursor: pointer;
+}
+  
+.click-zone-left {
+  position: absolute;
+  left: 0;
+  width: 60px;
+  height: 100%;
+  z-index: 100;
+  cursor: pointer;
+  display: none;
+}
+
+/* ========================
+   PAGE
+   ======================== */
+
+.page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.645, 0.045, 0.355, 1);
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.page.flipped {
+  transform: rotateY(-180deg);
+}
+
+/* ========================
+   PAPER FACES
+   ======================== */
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 0 4px 4px 0;
+  overflow: hidden;
+  background: linear-gradient(
+    to right,
+    #f7f3ec 0%,
+    #f7f3ec 88%,
+    #ece6d8 100%
+  );
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+/* Blank verso */
+.page-blank {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 0 4px 4px 0;
+  transform: rotateY(180deg);
+  background: linear-gradient(
+    to right,
+    #f2ede4 0%,
+    #f2ede4 88%,
+    #e6ddd0 100%
+  );
+}
+
+/* ========================
+   PAGE STACK
+   ======================== */
+
+#page1 { z-index: 7; }
+#page2 { z-index: 6; }
+#page3 { z-index: 5; }
+#page4 { z-index: 4; }
+#page5 { z-index: 3; }
+#page6 { z-index: 2; }
+#page7 { z-index: 1; }
+
+/* ========================
+   COVER FACES
+   ======================== */
+
+.cover-face {
+  background: #1e3a1e !important;
+  color: #f0e8d0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  padding: 40px;
+  position: relative;
+}
+
+.cover-face::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(240, 232, 208, 0.18);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.cover-face h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 62px;
+  font-weight: 700;
+  color: #f0e8d0;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  position: static;
+}
+
+.cover-face h2 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(240, 232, 208, 0.6);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  min-height: 20px;
+  position: static;
+}
+
+.back-cover-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(240, 232, 208, 0.4);
+  letter-spacing: 0.05em;
+}
+
+/* ========================
+   INNER PAGE CONTENT
+   ======================== */
+
+.page-inner {
+  padding: 44px 36px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.page-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #9a8f7e;
+  margin-bottom: 18px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.page-inner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: #2c2416;
+  margin-bottom: 16px;
+  line-height: 1.15;
+  position: static;
+}
+
+.page-inner p {
+  font-size: 13px;
+  line-height: 1.75;
+  color: #5a4e3e;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+}
+
+.mt {
+  margin-top: 12px;
+}
+
+.divider {
+  width: 32px;
+  height: 1px;
+  background: #c8b99a;
+  margin-bottom: 16px;
+}
+
+.page-num {
+  position: absolute;
+  bottom: 20px;
+  right: 28px;
+  font-size: 10px;
+  color: #b0a090;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.1em;
+}
+
+/* ========================
+   SKILLS
+   ======================== */
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.skill-tag {
+  padding: 8px 10px;
+  border: 1px solid #d8ccb8;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #4a3e2e;
+  font-family: 'DM Sans', sans-serif;
+  background: rgba(200, 185, 154, 0.08);
+}
+
+.skill-tag span {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9a8f7e;
+  margin-bottom: 3px;
+}
+
+/* ========================
+   PROJECTS
+   ======================== */
+
+.project-item {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e0d2;
+}
+
+.project-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.project-item h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: #2c2416;
+  margin-bottom: 5px;
+}
+
+.project-item p {
+  font-size: 11px;
+  color: #7a6e5e;
+  line-height: 1.6;
+}
+
+/* ========================
+   RESUME
+   ======================== */
+
+.resume-frame {
+  width: 100%;
+  flex: 1;
+  border: none;
+  margin-top: 16px;
+  border-radius: 4px;
+}
+
+/* ========================
+   CONTACT
+   ======================== */
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid #e8e0d2;
+  font-size: 11px;
+  color: #4a3e2e;
+  font-family: 'DM Sans', sans-serif;
+  word-break: break-all;
+}
+
+.contact-link:last-child {
+  border-bottom: none;
+}
+
+.contact-link .label {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9a8f7e;
+  width: 60px;
+  flex-shrink: 0;
+}
+
+/* ========================
+   HINT TEXT
+   ======================== */
+
+.hint {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 0.1em;
+  transition: opacity 0.5s ease;
+}
+
+
+a.contact-link {
+  text-decoration: none;
+  color: #4a3e2e;
+  cursor: pointer;
+}
+
+a.contact-link:hover {
+  color: #2c2416;
+}
+
+
+
+/* ========================
+   ABOUT PAGE
+   ======================== */
+
+.about-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.about-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid #d8ccb8;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #e8e0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
+
+.photo-placeholder {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-style: italic;
+  color: #9a8f7e;
+  letter-spacing: 0.02em;
+}
+
+
+/* ========================
+   skills PAGE
+   ======================== */
+
+.skills-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.skills-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 4px;
+  border: 1px solid #d8ccb8;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #e8e0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.skills-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
+
+.skills-photo-placeholder {
+  font-size: 22px;
+  color: #9a8f7e;
+}
+
+/* ========================
+     projects PAGE
+   ======================== */
+
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.projects-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid #d8ccb8;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #e8e0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.projects-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
+
+.photo-placeholder {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-style: italic;
+  color: #9a8f7e;
+  letter-spacing: 0.02em;
+}
+
+
+
+
+
+
+/* ========================
+   CONTACT PAGE
+   ======================== */
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.contact-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 4px;
+  border: 1px solid #d8ccb8;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #e8e0d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.contact-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
+
+.contact-photo-placeholder {
+  font-size: 22px;
+  color: #9a8f7e;
+}

@@ -1,11 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <title>3D Book Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>Hello World</h1>
+
+  <div class="scene">
+
+    <!-- NAVBAR -->
+    <div class="navbar" id="navbar">
+      <button onclick="goToPage(0)">Cover</button>
+      <button onclick="goToPage(1)">About</button>
+      <button onclick="goToPage(2)">Skills</button>
+      <button onclick="goToPage(3)">Projects</button>
+      <button onclick="goToPage(4)">Resume</button>
+      <button onclick="goToPage(5)">Contact</button>
+    </div>
+
+    <div class="book-wrap">
+      <div class="book" id="book">
+
+        <!-- Left base page (visible on left side after pages flip) -->
+        <div class="left-base-page" id="leftBase"></div>
+
+        <!-- CLICK ZONES -->
+        <div class="click-zone" id="clickRight"></div>
+        <div class="click-zone-left" id="clickLeft"></div>
+
+        <!-- PAGE 1: COVER -->
+        <div class="page" id="page1">
+          <div class="front cover-face">
+            <h1>Ashley<br>Rose</h1>
+            <h2 id="typing"></h2>
+          </div>
+          <div class="back page-blank"></div>
+        </div>
+
+        <!-- PAGE 2: ABOUT -->
+        <div class="page" id="page2">
+          <div class="front page-inner">
+            <div class="page-label">01 — About</div>
+        
+            <div class="about-header">
+              <h1>Hello,<br>I'm Ashley.</h1>
+              <div class="about-photo">
+                <img src="friendship garden.jpg" alt="Ashley Rose" onerror="this.style.display='none'">
+                <span class="photo-placeholder">AR</span>
+              </div>
+            </div>
+        
+            <div class="divider"></div>
+            <p>My name is Ashley Rose and I am 16 years old. I was born and raised in Mesa, Arizona. I am currently enrolled at Red Mountain High School and EVIT. I bring valuable experience from volunteering at the Mesa Public Library and the Red Mountain Girls Who Code Club.</p>
+            <p class="mt">Currently I am pursuing my High School degree while building projects that blend creativity with technical precision.</p>
+            <span class="page-num">01</span>
+          </div>
+          <div class="back page-blank"></div>
+        </div>
+
+        <!-- PAGE 3: SKILLS -->
+        <div class="page" id="page3">
+          <div class="front page-inner">
+            <div class="page-label">02 — Skills</div>
+            <div class="skills-header">
+              <h1>What I<br>Know</h1>
+              <div class="skills-photo">
+                <img src="flags close.jpg" alt="Skills Photo" onerror="this.style.display='none'">
+                <span class="skills-photo-placeholder">✦</span>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="skill-grid">
+              <div class="skill-tag"><span>Language</span>Python</div>
+              <div class="skill-tag"><span>Language</span>HTML5</div>
+              <div class="skill-tag"><span>Styling</span>CSS</div>
+              <div class="skill-tag"><span>Tool</span>Git & GitHub</div>
+              <div class="skill-tag"><span>Certified</span>TSA</div>
+              <a class="skill-tag" href="certs.html" target="_blank" rel="noopener">
+                <span class="label">Certifications</span>Veiw certifications here 
+              </a>
+            </div>
+            <span class="page-num">02</span>
+          </div>
+          <div class="back page-blank"></div>
+        </div>
+
+        <!-- PAGE 4: PROJECTS -->
+        <div class="page" id="page4">
+          <div class="front page-inner">
+            <div class="page-label">03 — Projects</div>
+            <div class="projects-header">
+              <h1>My work</h1>
+              <div class="projects-photo">
+                <img src="hoco light.jpg" alt="Ashley Rose" onerror="this.style.display='none'">
+                <span class="photo-placeholder">AR</span>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="project-item">
+              <h3>Python </h3>
+              <p>Various python project to deepen my understanding of the languaage and study for the Python certification through Certiport.</p>
+            </div>
+            <div class="project-item">
+              <h3>Cafe Project </h3>
+              <p>Fully thought out planning for development of a mock cafe game.</p>
+            </div>
+            <div class="project-item">
+              <h3>TSA Certification</h3>
+              <p>Passed the Technical Skills Assessment for the state of Arizona in Software and App Design.</p>
+            </div>
+            <span class="page-num">03</span>
+          </div>
+          <div class="back page-blank"></div>
+        </div>
+
+        <!-- PAGE 5: RESUME -->
+        <div class="page" id="page5">
+          <div class="front page-inner">
+            <div class="page-label">04 — Resume</div>
+            <h1>Resume</h1>
+            <div class="divider"></div>
+            <iframe src="resume.pdf" class="resume-frame"></iframe>
+            <span class="page-num">04</span>
+          </div>
+          <div class="back page-blank"></div>
+        </div>
+
+        <!-- PAGE 6: CONTACT -->
+        <div class="page" id="page6">
+          <div class="front page-inner">
+            <div class="page-label">05 — Contact</div>
+        
+            <div class="contact-header">
+              <h1>Get In<br>Touch</h1>
+              <div class="contact-photo">
+                <img src="fall.jpg" alt="Contact Photo" onerror="this.style.display='none'">
+                <span class="contact-photo-placeholder">✦</span>
+              </div>
+            </div>
+        
+            <div class="divider"></div>
+            <a class="contact-link" href="mailto:ashley.i.rose.2027@gmail.com">
+              <span class="label">Email</span>ashley.i.rose.2027@gmail.com
+            </a>
+            <a class="contact-link" href="https://github.com/Bill-up7" target="_blank" rel="noopener">
+              <span class="label">GitHub</span>github.com/Bill-up7
+            </a>
+            <a class="contact-link" href="https://linkedin.com/in/ashley-rose-114a503a7" target="_blank" rel="noopener">
+              <span class="label">LinkedIn</span>linkedin.com/in/ashley-rose-114a503a7
+            </a>
+            <div class="contact-link"><span class="label">Location</span>Mesa, Arizona</div>
+            <span class="page-num">05</span>
+          </div>
+          <div class="back page-blank"></div>
+        </div>
+        <!-- PAGE 7: BACK COVER -->
+        <div class="page" id="page7">
+          <div class="front cover-face">
+            <p class="back-cover-text">Ashley Rose — Portfolio</p>
+          </div>
+          <div class="back cover-face"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="hint" id="hint">Click the right side to open →</p>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
