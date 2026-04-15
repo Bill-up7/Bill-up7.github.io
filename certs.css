@@ -23,9 +23,9 @@
 
 @keyframes autoRun {
     from{
-         transform: perspective(1000px) rotateX(10deg) (0deg);
+         transform: perspective(1000px) rotateX(20deg) (0deg);
     } to{
-         transform: perspective(1000px) rotateX(10deg) rotateY(360deg);
+         transform: perspective(1000px) rotateX(20deg) rotateY(360deg);
     }
 }
 
