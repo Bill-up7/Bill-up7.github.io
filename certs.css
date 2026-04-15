@@ -13,7 +13,7 @@
     position: absolute;
     width: 200px;
     height: 250px;
-    top: 10;
+    top: 10px;
     left: calc(50% - 100px);
     transform-style: preserve-3d;
     transform: perspective(1000px);
@@ -23,7 +23,7 @@
 
 @keyframes autoRun {
     from{
-         transform: perspective(1000px) rotateX(20deg) (0deg);
+         transform: perspective(1000px) rotateX(20deg) rotateY(0deg);
     } to{
          transform: perspective(1000px) rotateX(20deg) rotateY(360deg);
     }
@@ -58,7 +58,7 @@
 }
 
 
-.banner .content .h1 {
+.banner .content h1 {
     font-family: 'ICA Rubrik';
     font-size: 16em;
     line-height: 1em;
@@ -72,7 +72,10 @@
 
 }
 
-.banner .content .h2 {
+.banner .content h2 {
     font-size: 3em;
 }
 
+.banner .slider {
+    top: 20%;
+}
