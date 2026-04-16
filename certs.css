@@ -1,53 +1,56 @@
-@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
-@import url('https://fonts.cdnfonts.com/css/poppins');
 
 .banner {
     width: 100%;
     height: 100vh;
-    display: flex;                /* ADD */
-    justify-content: center;      /* horizontal center */
-    align-items: center;          /* vertical center */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     overflow: hidden;
     position: relative;
 }
 
+/* ✅ FIXED SLIDER */
 .banner .slider {
     position: absolute;
     width: 200px;
     height: 250px;
-    top: 10px;
-    left: calc(50% - 100px);
+    top: 42%;
+    left: 50%;
     transform-style: preserve-3d;
-    transform: perspective(800px);
     animation: autoRun 20s linear infinite;
     z-index: 2;
-
 }
 
+/* ✅ NEW IMPROVED ANIMATION */
 @keyframes autoRun {
     from {
-        transform: translate(-50%, -50%) perspective(800px)
-                   rotateX(35deg) rotateY(0deg);
+        transform: translate(-50%, -50%) perspective(800px) rotateX(-10deg) rotateY(0deg);
     }
     to {
-        transform: translate(-50%, -50%) perspective(800px)
-                   rotateX(35deg) rotateY(360deg);
+        transform: translate(-50%, -50%) perspective(800px) rotateX(-10deg) rotateY(360deg);
     }
 }
 
-.banner .slider .item{
-    position: absolute;
-    inset: 0 0 0 0;
-    transform: 
-        rotateY(calc((var(--position) - 1) * (360deg / var(--quantity))))
-        translateZ(550px);
+/* ✅ PAUSE ON HOVER */
+.banner .slider:hover {
+    animation-play-state: paused;
 }
 
-.banner .slider .item img{
-    width:100%;
+.banner .slider .item {
+    position: absolute;
+    inset: 0;
+    transform: 
+    rotateY(calc((var(--position) - 1) * (360deg / var(--quantity))))
+    translateZ(420px); /* bigger circle */
+}
+
+.banner .slider .item img {
+    width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s;
+    backface-visibility: hidden;
 }
 
 .banner .content {
@@ -57,14 +60,13 @@
     transform: translateX(-50%);
     width: min(1400px , 100vw);
     height: max-content;
-    padding-bottom: 100px;
+    padding-bottom: 60px; 
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     z-index: 1;
 }
-
 
 .banner .content h1 {
     font-family: 'ICA Rubrik Black';
@@ -74,101 +76,62 @@
     position: relative;
 }
 
-.banner .content h1::after{
-    position: absolute;
-    inset: 0 0 0 0;
-    content: attr(data-content);
-    z-index: 2;
-    -webkit-text-stroke: 2px #d2d2d2;
-    color: transparent;
-} 
 
-.banner .content .author {
-    font-family:Poppins;
-    text-align: right;
-    max-width: 200px;
-
-}
-
-.banner .content h2 {
-    font-size: 3em;
-}
-
-.banner .slider {
-    top: 20%;
-}
 
 .banner .content .model {
     background-image: url(model.png);
     width: 100%;
-    height: 75vh;
+    height: 65vh;
     position: absolute;
     bottom: 0;
     left: 0;
-    background-size: auto 130%;
+    background-size: auto 115%;
     background-repeat: no-repeat;
     background-position: top center;
-    z-index: 1 ;
+    z-index: 1;
+}
+
+.hover-message {
+  position: absolute;
+  bottom: 10px; /* distance from bottom */
+  right: 20px;  /* distance from right */
+  font-size: 24px; /* larger font size */
+  color: #000; /* text color, you can customize */
+  background: rgba(255, 255, 255, 0.7); /* optional background for better readability */
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  z-index: 3; /* make sure it's above other elements */
 }
 
 
-/* Tablets */
-@media (max-width: 1024px) {
-    .banner .slider {
-        width: 160px;
-        height: 200px;
-    }
-
-    .banner .content h1 {
-        font-size: 10em;
-    }
+/* Fullscreen overlay */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
-/* Phones */
-@media (max-width: 768px) {
-    .banner .slider {
-        width: 120px;
-        height: 160px;
-    }
-
-    .banner .content h1 {
-        font-size: 6em;
-    }
-
-    .banner .content .author {
-        text-align: center;
-    }
+/* Show only when targeted (#img1, #img2, etc.) */
+.lightbox:target {
+  display: flex;
 }
 
-/* Small phones */
-@media (max-width: 480px) {
-    .banner .slider {
-        width: 90px;
-        height: 120px;
-    }
-
-    .banner .content h1 {
-        font-size: 3em;
-    }
-
-    .banner .content h2 {
-        font-size: 1.5em;
-    }
+/* Enlarged image */
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
 }
 
-.banner .slider .item {
-    transform: 
-        rotateY(calc((var(--position) - 1) * (360deg / var(--quantity))))
-        translateZ(45vw);   /* instead of 550px */
-}
-.banner .slider .item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s;
-}
-.banner .slider .item {
-    transform: 
-        rotateY(calc((var(--position) - 1) * (360deg / var(--quantity))))
-        translateZ(45vw);
+/* Clickable background to close */
+.lightbox .close {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
 }
